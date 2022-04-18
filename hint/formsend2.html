@@ -1,0 +1,55 @@
+<!--Оформить заявку -->
+<center>
+    <h3>Отправить расчет на e-mail</h3>
+
+    <p>Заполните данные</p>
+</center>
+
+<form class="send" enctype="multipart/form-data" method="post" id="formsend2">
+    <label for="name">Имя</label>
+    <input name="name" type="text">
+    <label for="phone">Телефон</label>
+    <input name="phone" type="tel">
+    <label for="mail">Email</label>
+    <input name="email" type="text">
+    
+    <div class="hide">
+        <h3>Область скрытых полей</h3>
+        
+       
+        <p>Прикрепить файлы</p>
+        <input type="file" name="userfile[]" multiple id="userfile" class="w100">
+        
+        <p>Заголовок письма для клиента</p>
+        <input name="title" type="text" value="Ваш расчет на сайте 'КонструкторОтделки.рф'">
+        
+        <p>Заголовок письма для админов</p>
+        <input name="title_toCopy" type="text" value="Сохранен расчет 'КонструкторОтделки.рф'">
+        <p>почта администратора для дубляции письма</p>
+        <input name="email_toCopy" type="mail" value="constructorotdelki@yar.ru">
+        
+        <input name="urlMain" type="text" value="http://КонструкторОтделки.рф">
+        <input name="phoneMain" type="text" value="+7 (555) 909-05-25, +7 (555) 909-05-25">
+        
+        <input name="attach_html" type="text">        
+    </div>
+    
+    <p><input id="btnSend" value="Отправить" type="submit"></p>
+</form>
+
+
+<script>
+    $(function() {
+        'use strict';
+        $('#formsend2').on('submit', function(e) {
+            e.preventDefault();
+            
+            var text = encodeURIComponent($('#forSavePDF').html());
+
+            $("input[name='attach_html']").val(text); 
+            
+            var fd = new FormData(this);
+            sendOnMail(fd);          
+        });
+    });
+</script>

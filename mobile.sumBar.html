@@ -1,0 +1,20 @@
+<div>
+    <div class="button_bar_label" ng-controller="SummatorController">
+        <a class="contact-bar__btn-phone" href="tel:{{page4_model1.contacts_for_tel}}" style="border: solid var(--color-lightgray, #D9D9D9) 1px; width: 100px;">
+            <img src="./images/ICO/telephone.png">
+        </a>
+        <div class="jastText">{{sum_AllPrice()}}</div>
+        <div class="jastText">{{sum_GetWantDay()}}</div>						
+    </div>
+</div>
+
+<style>
+    .jastText {
+        flex: 1;
+        margin: auto 5px;
+        font-size: 1.3em;
+        background-color: white;
+        color: var(--color-darkgray);
+        z-index: 2;
+    }
+</style>

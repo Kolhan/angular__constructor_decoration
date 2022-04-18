@@ -1,0 +1,121 @@
+<!--Название-->
+<div class="title">{{panel.title}}</div>
+
+<!--Область с опциями над кнопками-->
+<div ng-show='panel.headerCheckOptions != undefine'>
+    <div class='checkbox' ng-repeat="hd_item in panel.headerCheckOptions">
+        <input ng-model='hd_item.checked' type="checkbox" id="c{{hd_item.id}}" />
+        <label for="c{{hd_item.id}}"></label>
+        <span name='text'>{{hd_item.name}} {{hd_item.count}}{{hd_item.endstr}}</span>
+    </div>
+</div>
+
+<!--Область кнопок-->					
+<div class="button_bar">
+    <div ng-show="panel.tabs_title != undefine && panel.tabs_title != ''" class="btnbar_title">{{panel.tabs_title}}</div>
+   
+    <button ng-show='panel == page2_model1' ng-repeat="item in panel.tabs | rowIs0" class="{{panel.selectTabIndex == item.id?'active':''}}" ng-click="selectReadySolutions(item.id)">
+        <span ng-show='panel.isShowName'>{{item.name}}</span>
+    </button>
+   
+   
+    <button ng-show='panel != page2_model1' ng-repeat="item in panel.tabs | rowIs0" class="{{panel.selectTabIndex == item.id?'active':''}}" ng-click="changeTab(panel, item.id); lostReadySolution()">
+        <div>
+            <div ng-show='panel.isShowName'>{{item.name}}</div>
+            <div ng-show='panel.isShowSize'>{{item.size}}</div>
+            <div ng-show='panel.isShowPrice' name='price'>  
+                <div ng-hide='panel.selectTabIndex == item.id'>{{getPrice(item, panel)}}₽</div>
+                <div ng-show='panel.selectTabIndex == item.id'>&#10003;</div>                          
+            </div>
+            <img ng-show='item.btn_img != undefine' ng-src='./images/ICO/{{item.btn_img}}' name='btn_img'/>  
+        </div>
+        
+        
+        
+        <div ng-show='item.colors != undefine' class="colorInBtn">
+            <div class="button_bar color" >
+               <div ng-repeat="colorItem in item.colors">
+                  <div class="colorInBtn_Item" ng-click="item.selectColorInBtn = colorItem.id" style='background-color:{{colorItem.color}}'>
+                      <span ng-show='item.selectColorInBtn == colorItem.id && item.selectColorInBtn != -1'>&#10003;</span> 
+                      <span ng-show='item.selectColorInBtn == colorItem.id && item.selectColorInBtn == -1' style="color:red">&#10006;</span>
+                  </div>
+               </div>
+            </div>
+        </div>
+        
+    </button>
+</div>	
+
+<div class="button_bar" ng-show="(panel.tabs | filter: {row:1}).length">
+    <button ng-show='panel == page2_model1' ng-repeat="item in panel.tabs | filter: {row:1}" class="{{panel.selectTabIndex == item.id?'active':''}}" ng-click="selectReadySolutions(item.id)">
+        <span ng-show='panel.isShowName'>{{item.name}}</span>
+    </button>
+   
+   
+    <button ng-show='panel != page2_model1' ng-repeat="item in panel.tabs | filter: {row:1}" class="{{panel.selectTabIndex == item.id?'active':''}}" ng-click="changeTab(panel, item.id); lostReadySolution()">
+        <div>
+            <div ng-show='panel.isShowName'>{{item.name}}</div>
+            <div ng-show='panel.isShowSize'>{{item.size}}</div>
+            <div ng-show='panel.isShowPrice' name='price'>  
+                <div ng-hide='panel.selectTabIndex == item.id'>{{getPrice(item, panel)}}₽</div>
+                <div ng-show='panel.selectTabIndex == item.id'>&#10003;</div>                          
+            </div>
+            <img ng-show='item.btn_img != undefine' ng-src='./images/ICO/{{item.btn_img}}' name='btn_img'/>  
+        </div>
+        
+        <div ng-show='item.colors != undefine' class="colorInBtn">
+            <div class="button_bar color" >
+               <div ng-repeat="colorItem in item.colors">
+                  <div class="colorInBtn_Item" ng-click="item.selectColorInBtn = colorItem.id" style='background-color:{{colorItem.color}}'>
+                      <span ng-show='item.selectColorInBtn == colorItem.id && item.selectColorInBtn != -1'>&#10003;</span> 
+                      <span ng-show='item.selectColorInBtn == colorItem.id && item.selectColorInBtn == -1' style="color:red">&#10006;</span>
+                  </div>
+               </div>
+            </div>
+        </div>
+    </button>
+</div>                            
+								
+<div ng-show='panel.isShowHint'>{{panel.tabs[panel.selectTabIndex].hint}}<span ng-show="panel.selectTabIndex==-1">Вы можете выбрать готовое решение.</span></div>
+
+
+<!--Область функциональных кнопок-->					
+<div class="button_bar" ng-show='panel.function_tabs != undefine'>
+    <div ng-show="panel.function_tabs_title != undefine && panel.function_tabs_title != ''" class="btnbar_title">{{panel.function_tabs_title}}</div>
+
+    <button ng-hide="hideFunctionBtn(panel,item)" ng-repeat="item in panel.function_tabs" class="{{panel.selectFunctionTabIndex == item.id?'active':''}}" ng-click="changeFunctionTab(panel, item.id); lostReadySolution()">
+        <div>
+            <div>{{item.name}}</div>            
+        </div>  
+    </button>
+</div>
+
+<!--Область выбора цвета-->
+<div ng-show='panel.colors != undefine'>   
+    
+     
+    <!--Первый ряд кнопок -->
+    <div ng-controller="PageController" class="{{panel == page2_model3 && page2_model3.selectTabIndex == 0?'disableColor':''}}" ></div>
+    <div class="button_bar color" >
+        <div ng-show="panel.tabs_title != undefine && panel.tabs_title != ''" class="btnbar_title">{{panel.colors_title}}</div>
+        <button style='background-color:{{item.color}}' name='color' ng-repeat="item in panel.colors | rowIs0" class="{{panel.selectColorIndex == item.id?'selectColor':''}}" ng-click="panel.selectColorIndex = item.id"></button>
+    </div>
+    <!-- Второй ряд кнопок -->
+    <div ng-show="(panel.colors | filter: {row:1}).length">
+        <div ng-controller="PageController" class="{{panel == page2_model3 && page2_model3.selectTabIndex == 0?'disableColor':''}}" ></div>
+        <div class="button_bar color" >
+            <button style='background-color:{{item.color}}' name='color' ng-repeat="item in panel.colors | filter: {row:1}" class="{{panel.selectColorIndex == item.id?'selectColor':''}}" ng-click="panel.selectColorIndex = item.id"></button>
+        </div>
+    </div>
+
+    <div ng-show='panel.isShowColorsHint != undefine && panel.isShowColorsHint == true'>{{panel.colors[panel.selectColorIndex].hint}}</div>
+</div>
+
+<!--Область с опциями под кнопками-->
+<div ng-show='panel.footerCheckOptions != undefine' class='checkbox_bar'>    
+    <div class='checkbox' ng-repeat="ft_item in panel.footerCheckOptions">
+        <input ng-model='ft_item.checked' type="checkbox" id="c{{ft_item.id}}" />
+        <label for="c{{ft_item.id}}"></label>
+        <span name='text'>{{ft_item.name}}</span>
+    </div>
+</div>

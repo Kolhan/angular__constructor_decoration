@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html ng-app="NextProjectApp">
+<head>
+	<title>Конструктор отделки</title>
+
+    <meta charset="utf-8" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="./Content/site.css" >
+	
+	<!-- Шрифт Roboto -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:Thin" rel="stylesheet">
+	<!-- Bootstrap CSS -->
+    <!--<link rel="stylesheet" href="/Content/bootstrap.css">-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">-->	
+	
+	<!-- jquery -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> -->
+	<script src="./mailerphp/jquery-3.1.0.min.js"></script> 
+	
+	<!-- AngularJS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-touch.min.js"></script>
+    <script src="./libs/TweenMax.min.js"></script>	
+    
+    <!-- jsPDF -->
+    <!--<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>	
+    <script src="./jsPDF/plugins/standard_fonts_metrics.js"></script>
+    <script src="./jsPDF/plugins/split_text_to_size.js"></script>    
+    <script src="./jsPDF/plugins/from_html.js"></script>-->
+	
+	<!-- fullPage для прокрутки постранично -->
+	<script src="./Content/jquery.fullPage.js"></script>
+	<!-- CSS файл плагина fullpage -->
+	<link href="./Content/jquery.fullPage.css" type="text/css" rel="stylesheet">	
+	<!--Слайдер-->
+    <link rel="stylesheet" href="./Content/slider.css">
+    <!-- device скрипт для определения устройства -->
+    <script src="./libs/device.min.js"></script>
+
+
+    
+	<script>
+		var NextProjectApp = angular.module("NextProjectApp", ['ngAnimate', 'ngTouch']);
+        
+
+	
+        if(!device.mobile() && !device.tablet()){
+            //действие, которое нужно сделать, если браузер не мобильный
+
+            $(document).ready(function() {
+                $('#fullpage').fullpage({
+                    //anchors: ['page1', 'page2', 'page3', 'page4'],
+                    //sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
+                    navigation: true,
+                    navigationPosition: 'right',
+                    navigationTooltips: ['Комнаты', 'Готорвые решения', 'Ванная комната', 'Итоги']
+                });               
+                 
+                $('#btn_next').removeClass('hide');
+            });
+
+        } else {
+            $(document).ready(function() {
+                $('#btn_next').addClass('hide');
+            });
+        }
+	</script>
+	
+	
+	<script src="./Content/Model.js"></script>	
+	<script src="./Content/PageController.js"></script>	
+    <script src="./Content/Summator.js"></script>	
+    <!-- Поля ввода площади помещений -->
+    <script src="./Content/btn_room.js"></script> 
+    <script src="http://malsup.github.com/jquery.form.js"></script> 
+</head>
+<body >
+    <div ng-controller="PageController" class="hide">
+          <div ng-include="hints.item[0].url"></div> 
+    </div>
+  
+    <div id="loader" class="loader">
+        <div class="loader_mid">
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
+            <center><div>Загрузка</div></center>
+        </div>
+    </div>
+  
+   <!--Окно с подсказками-->
+    <div id="modal_cinw_ctnr" ng-controller="PageController" ng-show="windowinfo.isShow">
+        <div id='hints' class="modal_cinw"><a id="closeWindow" href="" class="modal_close" ng-click="CloseWindow()">&#10006;</a>
+        <div id="windowWait" class="windowWait hide">
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
+            <center><div>Отправка</div></center>
+        </div>
+          
+       
+           
+            
+            <div ng-repeat="item in hints.item" id='hint_{{$index}}'  class='hint' ng-include="item.url"><span ng-show="$index==0">Загрузка</span></div>        
+        </div>
+    </div>
+
+    <!-- Странички -->
+	<div id="fullpage">  
+       
+        <section data-anchor="PAGE0" class="section w1280" ng-controller="SummatorController" > 
+        <!-- <div class="hide" ng-controller="SummatorController" >-->
+           <div style="display: flex">
+                <span>
+                   <table>
+                       <thead>
+                           <td><strong>Название</strong></td>
+                           <td><strong>Площадь</strong></td>
+                           <td><strong>Дверей</strong></td>
+                       </thead>
+                       <tr ng-repeat="item in summer.room"> 
+                           <td>{{item.room}}</td>
+                           <td>{{item.square}}</td>
+                           <td>{{item.countDoor}}</td>
+                       </tr>
+                   </table>
+                </span>
+                <span>
+                   <table>
+                       <thead>
+                           <td><strong>Название</strong></td>
+                           <td><strong>Кол-во</strong></td>
+                       </thead>
+                       <tr ng-repeat="item in summer.counter"> 
+                           <td>{{item.name}}</td>
+                           <td>{{item.val}}</td>
+                       </tr>
+                   </table>
+                </span>
+                <span>
+                   <table>
+                       <thead>
+                           <td><strong>Название</strong></td>
+                           <td><strong>Кол-во</strong></td>
+                           <td><strong>Цена за ед.</strong></td>                           
+                           <td><strong>Сумма</strong></td>
+                       </thead>
+                       <tr ng-repeat="item in summer.sumPoint"> 
+                           <td>{{item.name}}</td>
+                           <td>{{item.count}}</td>
+                           <td>{{item.price}}</td>                           
+                           <td>{{item.sum}}</td>
+                       </tr>
+                       <tfoot>
+                           <td></td><td></td><td></td><td><strong>{{summer.summaPoints}}</strong></td>
+                       </tfoot>
+                   </table>
+                </span> 
+                <span>
+                   <table>
+                       <thead>
+                           <td><strong>Название</strong></td>
+                           <td><strong>Кол-во</strong></td>
+                           <td><strong>Цена за ед.</strong></td>                           
+                           <td><strong>Сумма</strong></td>
+                       </thead>
+                       <tr ng-repeat="item in summer.sumOption"> 
+                           <td>{{item.name}}</td>
+                           <td>{{item.count}}</td>
+                           <td>{{item.price}}</td>                           
+                           <td>{{item.sum}}</td>
+                       </tr>
+                       <tfoot>
+                           <td></td><td></td><td></td><td><strong>{{summer.summaOptions}}</strong></td>
+                       </tfoot>
+                   </table>
+                </span> 
+            </div>   
+        <!--</div>-->
+        </section>
+	
+		<section data-anchor="PAGE1" class="section w1280" ng-controller="PageController">
+			<div ng-include="'header_page1.html'"></div>
+            
+			<div>
+				<table class="tg w1280" id="page1_table">
+					<tr>
+						<th class="tg-031e w25p" rowspan="2">
+							<div name="btn_edit" class="btn_edit" ng-repeat="item in page1_model1.list1">
+								<button id='btn_{{item.id}}' class="btn_room {{isCurrentSelect(item.id)}}" ng-click="editShow(item)">{{item.room}}</button>
+								<div>
+									<input ng-show="item.editshow" ng-blur="editBlur(item)" ng-focus="editFocus(item)" class="inputSquare" type="number" step="0.1" ng-model="item.square" min="0" >
+									<div ng-hide="item.editshow" class="hint">{{item.hint}}</div>
+								</div>
+							</div>
+						</th>
+						<th class="tg-031e w25p" rowspan="2">
+							<div name="btn_edit" class="btn_edit" ng-repeat="item in page1_model1.list2">
+								<button id='btn_{{item.id}}' class="btn_room {{isCurrentSelect(item.id)}}" ng-click="editShow(item)">{{item.room}}</button>
+								<div>
+									<input ng-show="item.editshow" ng-blur="editBlur(item)" ng-focus="editFocus(item)" class="inputSquare" type="number" step="0.1" ng-model="item.square" min="0" >
+									<div ng-hide="item.editshow" class="hint">{{item.hint}}</div>
+								</div>
+							</div>
+						</th>
+						<th class="tg-031e w25p">
+							<div name="btn_edit" class="btn_edit" ng-repeat="item in page1_model1.list3">
+								<button id='btn_{{item.id}}' class="btn_room {{isCurrentSelect(item.id)}}" ng-click="editShow(item)">{{item.room}}</button>
+								<div>
+									<input ng-show="item.editshow" ng-blur="editBlur(item)" ng-focus="editFocus(item)" class="inputSquare" type="number" step="0.1" ng-model="item.square" min="0" >
+									<div ng-hide="item.editshow" class="hint">{{item.hint}}</div>
+								</div>
+							</div>
+						</th>
+						<th class="tg-031e w25p">
+							<div name="btn_edit" class="btn_edit" ng-repeat="item in page1_model1.list4">
+								<button id='btn_{{item.id}}' class="btn_room {{isCurrentSelect(item.id)}}" ng-click="editShow(item)">{{item.room}}</button>
+								<div>
+									<input ng-show="item.editshow" ng-blur="editBlur(item)" ng-focus="editFocus(item)" class="inputSquare" type="number" step="0.1" ng-model="item.square" min="0" >
+									<div ng-hide="item.editshow" class="hint">{{item.hint}}</div>
+								</div>
+							</div>
+						</th>
+						</tr>
+						<tr>
+						<td class="tg-031e" colspan="2">
+							<center>
+								<h1 class="clr_gray1">ИТОГО</h2> 
+								<div ng-controller="SummatorController" class="summary_page1">{{summer.counter[17].val == false?0:summer.counter[17].val}}м<sup>2</sup></div><br>
+								<a id="btn_next" class="btn_next" onclick="btnNext()">ПРОДОЛЖИТЬ</a>
+							</center>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</section>
+ 
+		<section data-anchor="PAGE2" class="section w1280" ng-controller="PageController">
+			<table class="tg w1280">
+		  <tr>
+			<th class="tg-031e">
+				<div class='imgLayers' style="height: 424px;">
+					<img ng-src='./images/Layers1/{{page2_model4.tabs[page2_model4.selectTabIndex].img}}'/>       <!-- Floor -->
+					<img ng-src='./images/Layers1/{{page2_model3.colors[page2_model3.selectColorIndex].img}}'/>   <!-- Wall -->
+					<img ng-src='./images/Layers1/{{page2_model5.tabs[page2_model5.selectTabIndex].img}}'/>       <!-- Door -->
+					<img ng-src='./images/Layers1/{{page2_model6.tabs[page2_model6.selectTabIndex].img}}'/>       <!-- Gap -->
+					<img src="./images/Layers1/HiGap_2.png" ng-show='page2_model6.footerCheckOptions[1].checked'/> <!-- HiGap -->
+					<img ng-src='./images/Layers1/{{page2_model7.tabs[page2_model7.selectTabIndex].img}}'/>       <!-- Electro -->			
+					
+					<img ng-show='page2_model1.selectFurnitureIndex>0' ng-src='./images/Furniture/{{page2_model1.furniture[page2_model1.selectFurnitureIndex].img}}'/>       <!-- Furniture -->	
+				</div>
+				<div class='panel_furniture'>
+                    <div>Интерьеры для примера:</div> 
+                    <div class="button_bar">
+                        <button style='background-color:{{item.color}}' name='color' 
+                            ng-repeat="item in page2_model1.furniture" 
+                            ng-click="page2_model1.selectFurnitureIndex = item.id" 
+                            class="furniture_select {{page2_model1.selectFurnitureIndex == item.id?'selectColor':''}}">
+                                <span ng-show='page2_model1.selectFurnitureIndex == $index?true:false'>&#8226</span>
+                        </button>
+                    </div>                    
+                    				
+				</div>
+                <div>
+                    <div class='imgLayers' style="height: 368px;">
+                        <img ng-src='./images/Layers2/{{page2_model7.tabs[page2_model7.selectTabIndex].img}}'/>        <!-- Electro -->
+                    </div>
+                    <div class='imgLayers'>
+                        <img ng-src='./images/Layers3/{{page2_model4.tabs[page2_model4.selectTabIndex].img}}'/>        <!-- Floor -->
+                        <img ng-src='./images/Layers3/{{page2_model3.colors[page2_model3.selectColorIndex].img}}'/>    <!-- Wall -->
+                        <img ng-src='./images/Layers3/{{page2_model6.tabs[page2_model6.selectTabIndex].img}}'/>        <!-- Gap -->
+                    </div>
+                </div>
+                <ng-include src="'sumBar.html'"></ng-include>                
+			</th>
+			<th class="tg-031e" rowspan="2">		
+			    <div class="panel" ng-repeat="panel in pagePanels.p2">
+					<ng-include src="'pagePanel.html'"></ng-include>
+				</div>
+            </th>
+		  </tr>
+		</table>
+		</section>
+ 
+		<section data-anchor="PAGE3" class="section w1280" ng-controller="PageController">
+			<table class="tg w1280">
+              <tr>
+				<th class="tg-031e">
+                   
+                    <div class='imgLayers' style="height: 424px;">
+                        <img ng-src='./images/Layers4/{{page3_model1.tabs[page3_model1.selectTabIndex].img}}'/>       <!-- Tile -->
+                        <!--<img ng-src='./images/Layers4/{{page3_model1.tabs[page3_model1.selectTabIndex].colors[page3_model1.tabs[page3_model1.selectTabIndex].selectColorInBtn].img}}' ng-show='page3_model1.tabs[page3_model1.selectTabIndex].selectColorInBtn>=0'/>-->                   <!-- Mosaic -->
+                        <img ng-src='./images/Layers4/{{page3_model2.tabs[page3_model2.selectTabIndex].img}}'/>       <!-- Furniture -->                        
+                        <img ng-src='./images/Layers4/{{page3_model3.tabs[page3_model3.selectTabIndex].img}}'/>       <!-- Santeh -->
+                        <img ng-src='./images/Layers4/{{page3_model5.tabs[page3_model5.selectTabIndex].img}}'/>       <!-- Toilet -->	
+                        <img ng-src='./images/Layers4/{{page3_model6.tabs[page3_model6.selectTabIndex].img}}'/>       <!-- Dryer -->
+                        <img ng-src='./images/Layers4/Shield.png' ng-show='!page3_model4.footerCheckOptions[0].checked'/>                    <!-- Shield -->
+                    </div>
+                    <div>
+                        <div class='imgLayers' style="height: 424px;">
+                            <img ng-src='./images/Layers4/{{page3_model3.selectTabIndex + 1}}.png'/>       <!-- Santeh BIG -->
+                        </div>
+                    </div>
+                    <ng-include src="'sumBar.html'"></ng-include>     
+                </th>
+				<th class="tg-031e" rowspan="2">
+				    <div class="panel" ng-repeat="panel in pagePanels.p3">
+                        <ng-include src="'pagePanel.html'"></ng-include>
+                    </div>
+                </th>
+			  </tr>
+			</table>
+		</section>
+		
+		<section data-anchor="PAGE4" class="section w1280" ng-controller="PageController">
+			<table class="tg w1280">
+			  <tr>
+				<th class="tg-031e">
+                    <center>ПРИМЕРЫ ВЫПОЛНЕННЫХ ИНТЕРЬЕРОВ</center>
+                    <div class="container slider">
+                        <img ng-repeat="slide in slides" class="slide slide-animation nonDraggableImage"
+                             ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
+                             ng-hide="!isCurrentSlideIndex($index)" ng-src="{{slide.image}}">
+
+                        <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
+                        <a class="arrow next" href="#" ng-click="prevSlide()"></a>
+                        <!--<nav class="nav">
+                            <div class="wrapper">
+                                <ul class="dots">
+                                    <li class="dot" ng-repeat="slide in slides">
+                                        <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
+                                           ng-click="setCurrentSlideIndex($index);">{{slide.description}}</a></li>
+                                </ul>
+                            </div>
+                        </nav>-->
+                    </div>
+                    
+                    <br/>
+                    <ng-include src="'sumBar.html'"></ng-include> 
+					
+					<br/>
+					<div class='ourStep'>
+                        <div name='subLine'></div>
+					    <table>
+					        <tr ng-repeat="item in steps">
+					            <td name='one'><img ng-src='./images/ICO/{{item.img}}'/></td>
+					            <td name='two'>
+					                <div name='title'>{{item.title}}</div>
+					                <div name='text'>{{item.text}}</div>
+					            </td>
+					        </tr>
+					    </table>
+					</div>
+				</th>
+				<th class="tg-031e" rowspan="2">
+                   <br/>
+                    <table class="tg">
+                       <tbody style="line-height: 29px;">
+                        <tr ng-repeat="item in page4_model1.rows">
+                            <td>
+                                <input ng-model='item.checked' type="checkbox" name="c{{item.id+1000}}" id="c{{item.id+1000}}" /><label for="c{{item.id+1000}}"></label>
+                            </td>
+                            <td>
+                                <div ng-controller="SummatorController">{{item.name}}<button id="btn_h{{item.hintindex}}" class="hint_btn" ng-show="item.hintindex != undefine && item.hintindex != -1" onclick="hintShow(this)" ng-click="ShowWindow(true)">?</button></div>
+                            </td>
+                            <td class='align_r'>                                
+                                <div class='inputPlusMinus' ng-show="item.isEditCount">
+                                    <input type='button' value='-' class='qtyminus' ng-disabled ='!item.checked==true' ng-click='inputBtn_minus(item)'/>
+                                    <input type='text'   value='0' class='qty'      ng-readonly ='!item.checked==true' ng-model="item.count"/>
+                                    <input type='button' value='+' class='qtyplus'  ng-disabled ='!item.checked==true' ng-click='inputBtn_plus(item)'/>
+                                </div>
+                            </td>
+                            <td class='align_r'>
+                                <div>{{item.sumView}}{{item.priceEnd}}</div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+
+                    
+					
+					<br>
+					<div class='p4_hint'>Вышеприведенный расчет действителен для новостроек без отделки. При наличии подготовки под отделку или иных ценообразующих факторов стоимость пересчитывается. Все расчеты на сайте являются ориентировочными. Изображения могут не совпадать с выбранными опциями. Гарантия – от 2-х лет.</div>
+					<br>
+
+					<div class="button_bar" ng-controller="SummatorController">
+						<button class="" onclick="DownloadRegInfo()">Сохранить расчет</button>
+						<button id="btn_h13" onclick="hintShow(this);" ng-click="ShowWindow(true)">Отправить расчет на e-mail</button>
+					</div>
+					<div class="button_bar" ng-controller="SummatorController">
+						<button id="btn_h12" onclick="hintShow(this);" ng-click="ShowWindow(true)">Обратный звонок</button>						
+						
+						<a href="{{constants.url_mainsaite}}" class="btn btn-default">На сайт КонструкторОтделки.рф</a>					
+					</div>
+					<div class="button_bar">
+					    
+						<div class='labelContact'>
+						    <img src="images/ICO/telephone.png">
+						    <span>{{page4_model1.contacts}}</span>
+						</div>
+					</div>
+				</th>
+			  </tr>
+			</table>
+		</section>
+	</div>
+
+
+    <script type="application/javascript">
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('#loader').addClass("hide");
+            }, 1000);
+        });
+        
+        function hintShow(i) {
+            var name = i.id;
+            var id = name.substr(5, name.length - 5);
+            var children = $('#hints').children(".hint").addClass('hide');
+            var curHint = $('#hints').children("#hint_"+id).removeClass('hide');
+        }
+        
+        
+        function ScrollTo(element)
+        {
+            $('html, body').animate({
+                scrollTop: element.offset().top
+            }, 2000);
+        }
+        
+        function btnNext(){
+            aurl = $("a[href='#PAGE2']")[0];
+            fireClickEvent(aurl);
+        }
+        
+        function DownloadRegInfo()
+        {            
+            var text = $('#forSavePDF').html();
+
+            var url = 'data:text/plain;charset=utf-8,%EF%BB%BF' + encodeURIComponent(text);
+            console.log(url);
+            var nameFile = 'констукторотделки.рф';
+            var nameTxt = nameFile + '.html';
+            //document.write('<a href="' + url + '" download="' + nameTxt + '">' + nameTxt + '</a>');
+
+            var a = document.createElement('a');
+            a.href = url;
+            //a.target = '_blank'; // now it will open new tab/window and bypass any popup blocker!
+            a.download = nameTxt;
+            fireClickEvent(a);
+            
+            $("#userfile").val("");
+
+        }
+        
+        ///функция клика мышкой по объекту
+        function fireClickEvent(element) {
+            var evt = new window.MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            });
+
+            element.dispatchEvent(evt);
+        }
+
+        function sendOnMail(fd){
+            $("#windowWait").removeClass("hide");
+            
+           $.ajax({
+                url: './mailerphp/send.php',
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: fd,
+                success: function(msg) {
+                    if (msg == 'ok' || msg == 'okok') {
+                        $("#windowWait").addClass("hide");
+                        clWin = $("#closeWindow")[0];
+                        fireClickEvent(clWin);  
+                    } else {
+                        //setTimeout(function() {
+                        //    $(".btnSend").val("Отправить");
+                        //}, 3000);
+                        $("#windowWait").addClass("hide");
+                        
+                        console.log(msg);
+                        alert('Ошибка. Не удалось отправить.');
+                    }
+                },
+                error: function(msg) {
+                    
+                    console.log(msg);
+                    alert('Ошибка. Не удалось отправить.');
+                    
+                },
+                complete: function() {
+                    $("#windowWait").addClass("hide");
+                },
+               
+            }); 
+        }
+    </script>
+</body>
+</html>
