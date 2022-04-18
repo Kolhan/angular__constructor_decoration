@@ -28,8 +28,8 @@ $attach_html    = urldecode($_REQUEST['attach_html']);
 
 //ПЕРЕМЕННЫЕ СЕРВЕРА
 $mail_server = '@ya.ru';
-$mail_login = 'constructorotdelki';
-$mail_password = '11774281177428';
+$mail_login = 'login';
+$mail_password = 'password';
 $mail_host = 'smtp.yandex.ru'; 
 $name_mailFrom = 'Конструктор отделки';
 

@@ -537,8 +537,8 @@ var hints = {
 
 /*Данные четвёртой страницы (PAGE4)*/
 var page4_model1 = {	
-    contacts: '+7 (555) 909-05-25, +7 (555) 909-05-25 ',
-    contacts_for_tel: '+755555555',
+    contacts: '+7 (999) 000-00-00, +7 (999) 000-00-00 ',
+    contacts_for_tel: '+79990000000',
     
     rows: [
         { id: 0,  name: 'Заглубление эл. щита + слаботочный щит + роутер',    count: 1, sum:0, price: 23000,  sumView:0, priceEnd: ' р.', checked: false, isEditCount: false, hintindex: 1},
